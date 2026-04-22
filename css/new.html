@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Netflix-style Hero</title>
+<style>
+  :root{
+    --bg-color: #000;
+    --overlay-top: rgba(0,0,0,0.45);
+    --overlay-bottom: rgba(0,0,0,0.75);
+    --accent: #e50914; /* Netflix red */
+    --muted: rgba(255,255,255,0.85);
+    --glass: rgba(0,0,0,0.35);
+    --radius: 10px;
+    --max-width: 1100px;
+    --content-padding: 28px;
+    --transition: 180ms ease;
+    font-synthesis: none;
+  }
+
+  /* Basic reset */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html,body{ height:100%; background:var(--bg-color); color: #fff; font-family: "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+
+  /* Fullscreen hero */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Background image (replace url) */
+  .hero::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('netflix-bg.jpg'); /* <-- replace with your image, or use a web URL */
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    filter: saturate(0.95) contrast(1.02);
+    transform-origin: center;
+    will-change: transform, filter;
+    transition: transform 12s linear;
+    z-index: 0;
+  }
+
+  /* Parallax-ish subtle pan */
+  .hero:hover::before { transform: scale(1.02) translateY(-1%); transition-duration: 16s; }
+
+  /* Gradient overlay to get the Netflix dark look */
+  .hero::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, var(--overlay-top) 0%, rgba(0,0,0,0.25) 40%, var(--overlay-bottom) 100%);
+    pointer-events: none;
+  }
+
+  /* Top nav with logo */
+  .nav {
+    position: absolute;
+    top: 18px;
+    left: 24px;
+    right: 24px;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo svg { height:34px; width:auto; display:block; }
+  .nav .profile { height:34px; width:34px; border-radius:4px; background:linear-gradient(45deg,#222,#111); border:1px solid rgba(255,255,255,0.06); }
+
+  /* Main content container */
+  .hero-content {
+    z-index: 4;
+    width: min(92%, var(--max-width));
+    padding: clamp(20px, 4vw, 56px);
+    display: flex;
+    gap: 28px;
+    align-items: flex-end;
+  }
+
+  .text {
+    max-width: 700px;
+    backdrop-filter: blur(4px);
+  }
+  .kicker {
+    color: var(--muted);
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    font-size: 13px;
+  }
+  h1 {
+    font-size: clamp(28px, 6vw, 56px);
+    line-height: 1.02;
+    margin-bottom: 14px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  }
+  p.desc {
+    color: rgba(255,255,255,0.9);
+    max-width: 60ch;
+    font-size: clamp(14px, 1.6vw, 18px);
+    margin-bottom: 18px;
+    line-height: 1.42;
+  }
+
+  /* Buttons */
+  .actions { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  .btn {
+    border: 0;
+    padding: 12px 18px;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    display:inline-flex;
+    gap:10px;
+    align-items:center;
+    font-weight:600;
+    transition: transform var(--transition), box-shadow var(--transition);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    text-decoration:none;
+    color: #fff;
+  }
+  .btn:active{ transform: translateY(1px); }
+  .btn-play {
+    background: var(--accent);
+    color: #fff;
+    padding-left: 16px;
+    padding-right: 20px;
+  }
+  .btn-play svg { height:18px; width:18px; flex:0 0 18px; }
+  .btn-ghost {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(0,0,0,0.5); }
+
+  /* Small meta row */
+  .meta { margin-top: 10px; color: rgba(255,255,255,0.75); font-size:13px; display:flex; gap:12px; align-items:center; }
+
+  /* Responsive tweaks */
+  @media (max-width: 720px){
+    .hero { align-items: flex-end; }
+    .nav { top: 12px; left: 12px; right:12px; }
+    .logo svg { height:28px; }
+    .hero-content { padding: 18px; }
+    .text { max-width: 100%; }
+    .kicker { font-size: 12px; }
+    .meta { font-size: 12px; gap:8px; }
+    .btn { font-size: 15px; padding: 10px 14px; border-radius: 8px; }
+  }
+
+  /* Accessibility focus */
+  .btn:focus { outline: 3px solid rgba(230,9,20,0.18); outline-offset: 2px; }
+
+  /* Small decorative poster on the right for large screens */
+  .poster {
+    flex: 0 0 260px;
+    max-width: 260px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+    transform-origin: bottom right;
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    z-index: 4;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .poster img { display:block; width:100%; height:100%; object-fit:cover; }
+
+  @media (max-width: 980px) {
+    .poster { display:none; }
+  }
+
+  /* small fade-in animation */
+  .fade-in { animation: fadeInUp 700ms ease both; }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+  <header class="nav" role="banner">
+    <div class="logo" aria-hidden="false">
+      <!-- Simple Netflix-like "N" SVG - decorative; can be replaced by your logo -->
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+            <stop offset="0" stop-color="#ff2e2e"/>
+            <stop offset="1" stop-color="#c90404"/>
+          </linearGradient>
+        </defs>
+        <rect width="32" height="32" rx="4" fill="black" opacity="0.08"></rect>
+        <path fill="url(#g)" d="M6 6v20l6-2 6 2V6l-6 2z"></path>
+      </svg>
+    </div>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <button class="btn btn-ghost" aria-label="Browse">Browse</button>
+      <div class="profile" role="img" aria-label="Profile"></div>
+    </div>
+  </header>
+
+  <main class="hero" role="main">
+    <div class="hero-content">
+      <div class="text fade-in" style="margin-bottom:48px;">
+        <div class="kicker">Trending now</div>
+        <h1>Stranger Nights: Volume 3</h1>
+        <p class="desc">When an ordinary small town becomes a vortex for the strange and the forgotten, a small group of friends risk everything to uncover the truth — and what they find is far worse than anyone expected.</p>
+
+        <div class="actions" role="group" aria-label="Primary actions">
+          <button class="btn btn-play" aria-label="Play">
+            <!-- play icon -->
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M4 2v20l18-10L4 2z"/></svg>
+            Play
+          </button>
+
+          <button class="btn btn-ghost" aria-pressed="false">+ My List</button>
+        </div>
+
+        <div class="meta" aria-hidden="false">
+          <span><strong>Season 3</strong></span>
+          <span>•</span>
+          <span>8 episodes</span>
+          <span>•</span>
+          <span>2025</span>
+        </div>
+      </div>
+
+      <aside class="poster fade-in" aria-hidden="true" style="margin-bottom:48px;">
+        <img src="poster.jpg" alt="" />
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
