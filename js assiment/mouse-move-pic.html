@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Move Pic - Image Follows Mouse</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            font-family: Arial, sans-serif;
+            cursor: none; /* Hide default cursor */
+        }
+        h1 {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        #follower {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            pointer-events: none;
+            z-index: 100;
+            transition: transform 0.1s ease-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+        /* Mouse trail effect */
+        #follower::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, white 20%, transparent);
+            transform: translate(-50%, -50%);
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🖱️ Move your mouse</h1>
+    <img id="follower" src="../css/mickey mouse.png" alt="Mouse follower pic">
+    
+    <script>
+        let follower = document.getElementById('follower');
+        document.addEventListener(`mousemove`, (e)=>{
+            follower.style.marginTop = `${e.y}px`;
+            follower.style.marginLeft = `${e.x}px`;
+            console.log(e);
+        })
+    </script>
+              
+</body>
+</html>

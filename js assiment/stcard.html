@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+       <input type="text" id="name" placeholder="Name">
+         <input type="number" id="rollno" placeholder="rollno">
+            <input type="text" id="course" placeholder="course">
+            <input type="text" id="image" placeholder="image url">
+            <br>
+            <br>
+
+             <button onclick="generateCard()">Generate ID Card</button>
+              <br>
+              <div class="card" id="card">
+    <h3>School Name</h3>
+    <img id="card-img" src="" alt="Student Image">
+    <p id="card-name">Name: ---</p>
+    <p id="card-roll">Roll No: ---</p>
+    <p id="card-class">Class: ---</p>
+  </div>
+  
+</body>
+    <script>
+
+         let id = document.getElementById("add")
+            id.addEventListener("click", ()=>{
+                let name = document.getElementById("name").value
+                let rollno = document.getElementById("rollno").value
+                let course = document.getElementById("course").value
+                let image = document.getElementById("image").value
+                console.log(name, rollno, course, image)
+            })
+
+           document.getElementById("card-img").src = image
+            document.getElementById("card-name").textContent = `Name: ${name}`
+            document.getElementById("card-roll").textContent = `Roll No: ${rollno}`
+            document.getElementById("card-class").textContent = `Class: ${course}`
+
+
+             if (image) {
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById("card-img").src = e.target.result;
+    }
+    reader.readAsDataURL(image);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // create student card
+        // let students = [
+        //     {
+        //         name: "Mehren Munir",
+        //         age: 25,
+        //         course: "Web Development",
+        //         image: "https://avatars.githubusercontent.com/u/122380441?v=4"
+        //     },
+        //     {
+        //         name: "John Doe",
+        //         age: 30,
+        //         course: "Data Science",
+        //         image: "https://avatars.githubusercontent.com/u/122380441?v=4"
+        //     },
+        //     {
+        //         name: "Jane Smith",
+        //         age: 28,
+        //         course: "Machine Learning",
+        //         image: "https://avatars.githubusercontent.com/u/122380441?v=4"
+        //     }
+        // ]
+        // let container = document.createElement("div")
+        // container.style.display = "flex"
+        // container.style.justifyContent = "space-around" 
+        // students.forEach(student => {
+        //     let card = document.createElement("div")
+        //     card.style.border = "1px solid black"
+        //     card.style.padding = "10px"
+        //     card.style.width = "200px"
+        //     card.style.textAlign = "center"
+        //     let img = document.createElement("img")
+        //     img.src = student.image
+        //     img.style.width = "100%"
+        //     let name = document.createElement("h2")
+        //     name.textContent = student.name
+        //     let age = document.createElement("p")
+        //     age.textContent = `Age: ${student.age}`
+        //     let course = document.createElement("p")
+        //     course.textContent = `Course: ${student.course}`
+        //     card.appendChild(img)
+        //     card.appendChild(name)
+        //     card.appendChild(age)
+        //     card.appendChild(course)
+        //     container.appendChild(card)
+        // })
+        // document.body.appendChild(container)
+
+    </script>
+
+</html>

@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+   
+</body>
+<script>
+    let headone = document.createElement("h1")
+    headone.textContent = "Hello World"
+    document.body.appendChild(headone)
+    console.log(headone)
+
+    let headtwo = document.createElement("h2")
+   headtwo.textContent = "Welcome to JavaScript"
+    document.body.appendChild(headtwo)
+    console.log(headtwo)
+    
+
+    let para = document.createElement("p")
+    para.textContent = "My name is Mehreen Munir"
+    para.style.color = "blue"
+    document.body.appendChild(para)
+    console.log(para)
+      
+   let input = document.createElement("input")
+   console.log(input)
+   input.type = "text"
+   input.value = "Enter your name"
+   document.body.appendChild(input)
+
+let btn = document.createElement("button")
+btn.textContent = "Submit"
+document.body.appendChild(btn)
+console.log(btn)
+
+let list = document.createElement("ol")
+document.body.appendChild(list)
+console.log(list)
+
+btn.addEventListener("click", ()=>{
+    let item = document.createElement("li")
+    item.textContent = input.value
+    list.appendChild(item)
+    input.value = ""
+})
+
+// this
+
+let student = {
+    name : "Mehreen",
+    age : 22,
+    grade : "A",
+    studentdata (){
+        return `${this.name} is ${this.age} years old and has a grade of ${this.grade}`
+    }
+}
+console.log(student.name) // dot notation
+console.log(student["age"]) // bracket notation
+console.log(student.studentdata()) // calling the method
+</script>
+
+</html>

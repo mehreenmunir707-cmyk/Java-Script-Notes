@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial Black', monospace;
+            overflow: hidden;
+        }
+        .clock {
+            margin-left: 200px;
+            
+            font-size: 8rem;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.8);
+            letter-spacing: 0.3em;
+            padding: 40px 60px;
+            border: 8px solid rgba(255,255,255,0.3);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 
+                0 0 50px rgba(255,255,255,0.3),
+                inset 0 0 30px rgba(255,255,255,0.1);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { box-shadow: 0 0 50px rgba(255,255,255,0.3), inset 0 0 30px rgba(255,255,255,0.1); }
+            to { box-shadow: 0 0 80px rgba(255,255,255,0.6), inset 0 0 50px rgba(255,255,255,0.2); }
+        }
+        .date {
+            font-size: 2rem;
+            color: rgba(255,255,255,0.9);
+            margin-top: 20px;
+            text-align: center;
+            margin-left: 20px;
+            letter-spacing: 0.1em;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="clock" id="time"></div>
+<br>
+<br>
+
+    <div class="date" id="date"></div>
+    
+    <script>
+       
+        
+
+        function updateClock() {
+            let now = new Date();
+          
+            let timeStr = now.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+              document.getElementById('time').textContent = timeStr;
+            
+            let dateStr = now.toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            
+            document.getElementById('date').textContent = dateStr;
+        }
+        
+        // Update every second
+        setInterval(updateClock, 1000);
+        updateClock(); 
+    </script>
+</body>
+</html>
